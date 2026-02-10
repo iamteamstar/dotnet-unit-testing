@@ -106,3 +106,4 @@ C:\Users\technopc\Desktop\Full Stack Web\Backend\Files\JobApplicationLibrary\Job
 C:\Users\technopc\Desktop\Full Stack Web\Backend\Files\JobApplicationLibrary\JobApplicationLibrary.UnitTest\bin\Debug\net8.0\JobApplicationLibrary.exe
 C:\Users\technopc\Desktop\Full Stack Web\Backend\Files\JobApplicationLibrary\JobApplicationLibrary.UnitTest\bin\Debug\net8.0\JobApplicationLibrary.dll
 C:\Users\technopc\Desktop\Full Stack Web\Backend\Files\JobApplicationLibrary\JobApplicationLibrary.UnitTest\bin\Debug\net8.0\JobApplicationLibrary.pdb
+C:\Users\technopc\Desktop\Full Stack Web\Backend\Files\JobApplicationLibrary\JobApplicationLibrary.UnitTest\obj\Debug\net8.0\JobApplicationLibrary.UnitTest.sourcelink.json

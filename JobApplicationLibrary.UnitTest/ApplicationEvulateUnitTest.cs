@@ -31,7 +31,50 @@ namespace JobApplicationLibrary.UnitTest
 			var appResult = evulator.Evulate(form);
 
 			//Assert
-		   Assert.AreEqual(appResult,ApplicationResult.AutoRejected);//AreEqual:assertin içerisine iki tane parametre göndereceðim ve  bunlarýn birbirine eþit olup olmadýðýna bakacaðým
+			Assert.That(appResult, Is.EqualTo(ApplicationResult.AutoRejected));//AreEqual:assertin içerisine iki tane parametre göndereceðim ve  bunlarýn birbirine eþit olup olmadýðýna bakacaðým
+		}
+
+
+		[Test]
+		public void Application_WithNotechStack_TransferredToAutoRejected()//hiçbir benzerlik oraný olmadýðýnda(yeteneklerde) beklediðim sonucu test ediyorum.
+		{
+			// 3 bölümümüz olucak:
+			//Arrange:ayarlama yapýlýr. Ne yapmak istiyoruz? ApplicationEvulator classýnýn altýndaki Evulate metodunu test etmek istiyoruz. Bu sýnýftan bir instance oluþturmamýz gerek
+			var evulator = new ApplicationEvulator();
+			var form = new JobApplication()
+			{
+				Applicant = new Applicant(),
+				TechStackList=new System.Collections.Generic.List<string>() {""}//boþ gönderdik.
+
+			};
+
+			//Action:iþlem yapýlýr
+			var appResult = evulator.Evulate(form);
+
+			//Assert
+			Assert.That(appResult, Is.EqualTo(ApplicationResult.AutoRejected));
+		}
+		[Test]
+		public void Application_WithTechStackAndExperience_TransferredToAutoAccepted()
+		{ 
+			//Arrange:ayarlama yapýlýr. 
+			var evulator = new ApplicationEvulator();
+			var form = new JobApplication()
+			{
+				Applicant = new Applicant(),
+				TechStackList=new System.Collections.Generic.List<string> 
+				{
+					"C#", "RabbitMQ", "Microservice", ".Net", "MSSQL" //skiller tamamen uyuþuyor
+				
+				},
+				YearsOfExperience=8
+			};
+
+			//Action:iþlem yapýlýr
+			var appResult = evulator.Evulate(form);
+
+			//Assert
+			Assert.That(appResult, Is.EqualTo(ApplicationResult.AutoAccepted));//AreEqual:assertin içerisine iki tane parametre göndereceðim ve  bunlarýn birbirine eþit olup olmadýðýna bakacaðým
 		}
 
 	}
