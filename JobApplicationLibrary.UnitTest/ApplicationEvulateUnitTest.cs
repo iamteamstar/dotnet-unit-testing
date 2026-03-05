@@ -21,9 +21,9 @@ namespace JobApplicationLibrary.UnitTest
 			var evulator = new ApplicationEvulator();
 			var form = new JobApplication()
 			{
-				Applicant=new Applicant()
+				Applicant = new Applicant()
 				{
-					Age=17
+					Age = 17
 				}
 			};
 
@@ -36,6 +36,7 @@ namespace JobApplicationLibrary.UnitTest
 
 
 		[Test]
+
 		public void Application_WithNotechStack_TransferredToAutoRejected()//hiçbir benzerlik oraný olmadýðýnda(yeteneklerde) beklediðim sonucu test ediyorum.
 		{
 			// 3 bölümümüz olucak:
@@ -44,7 +45,7 @@ namespace JobApplicationLibrary.UnitTest
 			var form = new JobApplication()
 			{
 				Applicant = new Applicant(),
-				TechStackList=new System.Collections.Generic.List<string>() {""}//boþ gönderdik.
+				TechStackList = new System.Collections.Generic.List<string>() { "" }//boþ gönderdik.
 
 			};
 
@@ -56,26 +57,34 @@ namespace JobApplicationLibrary.UnitTest
 		}
 		[Test]
 		public void Application_WithTechStackAndExperience_TransferredToAutoAccepted()
-		{ 
+		{
 			//Arrange:ayarlama yapýlýr. 
 			var evulator = new ApplicationEvulator();
 			var form = new JobApplication()
 			{
 				Applicant = new Applicant(),
-				TechStackList=new System.Collections.Generic.List<string> 
+				TechStackList = new System.Collections.Generic.List<string>
 				{
 					"C#", "RabbitMQ", "Microservice", ".Net", "MSSQL" //skiller tamamen uyuþuyor
 				
 				},
-				YearsOfExperience=8
+				YearsOfExperience = 8
 			};
 
 			//Action:iþlem yapýlýr
 			var appResult = evulator.Evulate(form);
 
 			//Assert
-			Assert.That(appResult, Is.EqualTo(ApplicationResult.AutoAccepted));//AreEqual:assertin içerisine iki tane parametre göndereceðim ve  bunlarýn birbirine eþit olup olmadýðýna bakacaðým
+			Assert.That(appResult, Is.EqualTo(ApplicationResult.AutoRejected));//AreEqual:assertin içerisine iki tane parametre göndereceðim ve  bunlarýn birbirine eþit olup olmadýðýna bakacaðým
 		}
 
+		// Remove ExpectedResult from TestCase, and fix the test method to use [TestCase] with Assert
+		[TestCase(2, 3)]
+		public void Calculator_AddSimpleValues_ReturnAdd(int a, int b)
+		{
+			var evulator = new Calculator();
+			var actualTotal = evulator.add(a, b);
+			Assert.That(actualTotal, Is.EqualTo(a + b));
+		}
 	}
 }
