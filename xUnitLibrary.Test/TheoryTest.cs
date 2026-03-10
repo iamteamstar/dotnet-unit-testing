@@ -32,17 +32,10 @@ namespace xUnitLibrary.Test
 
 		[Theory]
 		[InlineData(2, 4, 6)]
-		[InlineData(2, -2, 0)]//a,b,expectedTotal
 		public void AddTestWithTheory(int a, int b, int expectedTotal)
 		{
-			
-
 			myMock.Setup(x => x.add(a, b)).Returns(expectedTotal);//eğer ICalculatorService üzerinde "add" metodu çağrılırsa, bana return olarak "expectedTotali" dön diyorum
-			
-			// calculator = new Calculator();
-			var actualTotal = calculator.add(a, b);//gerçek data
-
-			Assert.Equal(expectedTotal, actualTotal);
+			Assert.Equal(expectedTotal, calculator.add(a, b));
 		}
 		[Fact]
 		public void SubstractTestWithTheory()
@@ -50,9 +43,9 @@ namespace xUnitLibrary.Test
 			int a = 1;
 			var b = 2;
 			//var calculator =new Calculator();
-
+			myMock.Setup(x=>x.subtract(a, b)).Returns(a+b);
 			var actualTotal = calculator.subtract(a, b);
-			Assert.Equal(1, actualTotal);
+			Assert.Equal(a+b, actualTotal);
 		}
 		/*
 		 Test Method İsimlendirme
@@ -86,16 +79,35 @@ namespace xUnitLibrary.Test
 		[InlineData(-25, 50, 25)]
 		public void Substract_NotNegativeValue_ReturnAbsoluteValue(int a, int b, int expectedSub)
 		{
+			myMock.Setup(x=>x.subtract(a,b)).Returns(expectedSub);
 			var actualSub = calculator.subtract(a, b);
 			Assert.Equal(expectedSub, actualSub);
 		}
 		[Theory]
 		[InlineData(0,3,0)]
-		[InlineData(1,3,0)]
-		public void ConstructorServive_MultipleValues_ReturnZeroForever(double a, double b,double expectedMultiple)
+		[InlineData(1,3,3)]
+		[InlineData(1,null,0)] //Sınıflar birbiriyle doğru konuşuyor mu testi...
+		public void ConstructorServive_MultipleValues_ReturnMultiplication(int a, int b,int expectedMultiple)
 		{
-			myMock.Setup(x=>x.multiple(a,b)).Returns(expectedMultiple);
+			var calculator = new CalculatorService();
+			var actual = calculator.multiple(a, b);
+			Assert.Equal(expectedMultiple, actual);
 		}
+		/*Moq frameworkunun de bazı hazır metotları vardır. Bir metodun çalışıp çalışmadığını test etmek, bir metodun iki kere mi 3 kere mi çalıştığını 
+		görmemizi sağlayan metotlar vardır. Verify ile bir metodun kaç kez çalıştığını eya hiç çalışmama durumunu test edebiliriz
+		*/
+		[Theory]
+		[InlineData(0,3,3)]
+		public void Add_SimpleValues_ReturnTotalValues(int a, int b,int expectedTotal)
+		{
+			myMock.Setup(x=>x.add(a,b)).Returns(expectedTotal);
+			var result = calculator.add(a, b);//add metodunun yalnız bir kere çalışmasını garanti etmek istiyorum. Eğer iki kez çalışırsa test başarısız olsun
+			Assert.Equal(expectedTotal, result);
+			myMock.Verify(x=>x.add(a,b),Times.Once);    //myMock üzerinden doğrula(neyi? -- > add metotdunun doğru çalışması için times.once bu metot bir kez çalışsın diyoruz.
+														//never dediğimiz zaman hiç çalışmamış olmaısnı test ediyorum.yani bu test çalıştığı zaman add metodu hiç çalışmazsa testten geçecek metot çağrılmazsa testten geçecek
+														//myMock.Verify(x=>x.add(a,b),Times.AtLeast(2) //metodun en az iki kere çalışması için ise AtLeast(istenen)
 
+																//en fazla 2 kere çalışması için ise myMock.Verify(x=>x.add(a,b),Times.AtMost(2)
+}
 	}
 }
