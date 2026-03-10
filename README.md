@@ -42,7 +42,59 @@ Unit test yazmak üç aşamadan oluşur:
 **Assert :**doğrulama evresidir. act evresinden çıkan sonuç benim bekleidğim sonuç mu diye kontrol edeceğim yer. 
 
 ## Assert Metotları 
+Assert doğrulama evresidir. act evresinden çıkan sonuç benim bekleidğim sonuç mu diye kontrol edeceğim yer. burada total değişkeni benim beklediğim sonucu veriyor mu diye kontrol edeceğim
 
+Assert.Equal<int>(11, total);			//assert içinde onalrca statik metot var. bir classı karşılaştırmak,
+										 //bir riski karşılaştırabilriiz. bunlardan en temeli; iki string ifadeyi karşılaştırmak,
+iki int/double/float vs ifadeyi karşılaştırmak için kullanılacak metot "Equals" metodudur. bu metot generic bir metot olduğu için türü belirtmemiz gerekiyor. ben int türünde bir karşılaştırma yapacağım için <int> yazıyorum. ilk parametre beklediğim sonuç, ikinci parametre act aşamasından çıkan sonuç
+		}                               //NotEqual metodu beklediğim sonuçla act aşamasından çıkan sonucu karşılaştırır ve eğer birbirlerine eşit değillerse test başarılı olur. eğer birbirlerine eşitlerse test başarısız olur.
+
+
+Assert.Contains("Azad", "Azad Koçak");//Constaints: ifadede azad geçip geçmediğini kontrol eder
+contains metodu gerçek değerin içinde beklediğimiz değerin olup olmadığını kontrol eder			
+DoesNotContain metodu gerçek değerin içinde beklediğimiz değerin olmadığını kontrol eder aynı örnekten gidersek
+
+Assert.DoesNotContain("Azad", "Azad Koçak"); //Azad Kocakta azad geçiyor ama ben beklediğim değerin geçmemesini istediğim için test başarısız olur. Assert.Contains("Azad", "Azad Koçak"); //ifadesinde ise azad geçiyor ve ben beklediğim değerin geçmesini istediğim için test başarılı olur.
+var names = new List<string>() { "Azad", "Koçak" };
+Assert.DoesNotContain(names, x => x == ("Azad"));// bu örnekte names koleksiyonunun içinde azad geçiyor mu diye kontrol ediyoruz.eğer azad geçiyorsa test başarılı olur.
+
+var regex = "^dog";
+Assert.DoesNotMatch(regex, "dfgddoggy");
+
+matches bir regex ifadesi alır ve bu ifade üzerinden eğer beklediğim değer bu regex ile uyuyorsa true döner uymazsa  false döner
+^dog bu regex kodu şunu işade eder: beklenen kelime başında dog ile başlıyorsa true döner başlamıyosa yanlıştır dog$ bu regex kodu ise beklenen kelime sonunda dog ile bitiyorsa true döner bitmiyorsa false döner
+^dog$ kelime içinde dog yazması gerek
+DoesNotMatch ise regexe göre içinde sonunda veya başında olmadığı durumda true döner
+
+
+Assert.EndsWith("Azad", "Kocak !23441 Azad");
+startswith ile belirliten değerle başlayıp başlamadığının kontrolü. Gelen değer Azad Koçak. StartWith ile Azad verirsek gerçek değerde öyle başlayıp başlamadığının kontrolü yapılır
+startWith ile ilk kelimeye bakar, endWith ile son kelimeye bakar
+
+
+Assert.NotEmpty(new List<string>() { "asas" }); //içerideki dizin boş mu kontrolü
+
+Assert.NotInRange(54, 4, 6);//içerisinde vermiş olduğumuz list in array in bir elemanı varsa true,daha fazla ise false döner 
+
+Assert.Single(new List<string>() { ""});
+
+
+Assert.IsType<string>("ds");//içerideki ifade string olduğu için true döner
+Assert.IsNotType<int>("");
+IsType: generic metottur. içerdeki ifadnin tipinin doğru olup olmadığının kontrolunu yapar 
+
+Assert.IsAssignableFrom<IEnumerable<string>>(new List<string>());	
+//mettotdan beklediğim tip [gelecek kısım :()] mutlaka  IEnumarable stringi implemente etmiş olmalı ki ona assignable olsun yani atanabilsin
+Assert.IsAssignableFrom<Object>("string"); //objeden mras alan herhangi bir tip dönbebilir int,float,string, bool...
+
+
+var deger = "test";
+Assert.NotNull(deger);
+//null içeriye vermiş olduğumuz ifademiz null ise true değilse false döner
+//not null tam tersi durumdur boşsa false doluysa true
+
+//equal:iki değeri karşılaştırmak için kullanışlır iki değer aynıysa true değilse false döner
+Assert.Equal<int>(2,2);//generic kullanmak hem daha performanslı hem daha güvenli
 
 ## Mocking ve Moq Framework
 Mock, uygulama içinde class veya interfacelerin davranışlarını taklit etmemizi sağlayan objelerdir.
