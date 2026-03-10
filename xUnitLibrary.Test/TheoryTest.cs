@@ -84,10 +84,9 @@ namespace xUnitLibrary.Test
 			Assert.Equal(expectedSub, actualSub);
 		}
 		[Theory]
-		[InlineData(0,3,0)]
 		[InlineData(1,3,3)]
 		[InlineData(1,null,0)] //Sınıflar birbiriyle doğru konuşuyor mu testi...
-		public void ConstructorServive_MultipleValues_ReturnMultiplication(int a, int b,int expectedMultiple)
+		public void ConstructorService_MultipleValues_ReturnMultiplication(int a, int b,int expectedMultiple)
 		{
 			var calculator = new CalculatorService();
 			var actual = calculator.multiple(a, b);
@@ -108,6 +107,49 @@ namespace xUnitLibrary.Test
 														//myMock.Verify(x=>x.add(a,b),Times.AtLeast(2) //metodun en az iki kere çalışması için ise AtLeast(istenen)
 
 																//en fazla 2 kere çalışması için ise myMock.Verify(x=>x.add(a,b),Times.AtMost(2)
-}
+		}
+		/*Throw metod üzerinden geriye hata fırlatmak için kullanılır? tamam da nedir bu, anlamı nedir?
+		 * diyelim ki gerçek projede bir servisten belli bir şarta göre gerite bir hata fırlatıyoruz. işte bu gibi durumları mock tarafında simüle etmek için kullanılır
+		 */
+		[Theory]
+		[InlineData(0,3)]
+		public void Multiple_ZeroValues_ReturnExpection(int a, int b)
+		{
+			myMock.Setup(x=>x.multiple(a, b)).Throws(new Exception("a=0 olamaz"));//hata servisteki ile aynı olmalı
+		Exception exception=	Assert.Throws<Exception>(()=>calculator.multiple(a,b)); //hata bir ecpection tipinde olacak. sonrasnda boş, geriye bir şey dönemeyen parametre almayan metot bekler
+			Assert.Equal("a=0 olamaz",exception.Message);//benim beklediğimle hatadan  gelen aynıysa doğrudur
+
+		}
+		//bir metot üzerinden callback çalıştırmak: ikinci bir metod çalıştırmak kısaca. simule edeceğimiz metot  sadece int tipi değer alışsa çalışsın, string değeri alırsa şu değeri alsın vs
+		//simule edilen metottan sonra .callback() şeklinde çağrılır 
+		//simüle edeceğimiz metotta herhangi bir değeri kabul etmek için ise It.IsAny<type> kullanılır
+
+
+		/*
+		[Theory]
+		[InlineData(2,3,6)]	
+		public void Multiple_CallbackAndIsAny(int a,int b,int expectedMultiple)
+		{
+			myMock.Setup(c=>c.multiple(a,b)).Returns(expectedMultiple);
+			Assert.Equal(15,calculator.multiple(a,b));
+		//	Assert.Equal(10,calculator.multiple(a=2,b=5)); --> işte burada hata alırız çünkü şuan a ve b değerleri 2 ve 3 dışında herhangi
+    	//	bir şey kabl etmiyor. yani sadece onları test ediyor. bizim bunu değiştirrip farklı sayıları da test etmemiz gerekiir
+		//şimdi bu metodu yorum satırı yapıp aşağıda anlatıyorum
+		}
+		*/
+		[Theory]
+		[InlineData(2, 3, 6)]
+		public void Multiple_CallbackAndIsAny(int a, int b, int expectedMultiple)
+		{
+			int actualMultiple=0;
+			myMock.Setup(c => c.multiple(It.IsAny<int>(),It.IsAny<int>()))//burada a ve be değil, herhangi bir değeri kabul edeceğini belirten It.IsAny kullanılır. yani bu metot integer olarak herhangi bir değer alabilir
+				.Callback<int,int>((x,y)=>actualMultiple=x*y);//herhangi bir integer dfeğer geldiği zaman callbakck ile şu metot çalışsın diyoruz
+			calculator.multiple(a,b);
+			Assert.Equal(expectedMultiple, actualMultiple);
+			calculator.multiple(20, 5);
+			Assert.Equal(100, actualMultiple);//callback ve iı.isAny kullanmasaydık bu şekilde birden çok equal metodu çağıramazdık
+		}
+
+
 	}
-}
+	}
