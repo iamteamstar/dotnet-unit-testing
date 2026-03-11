@@ -1,0 +1,27 @@
+﻿@model xUnitTestWithMVC.Models.Product
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    @Html.LabelFor(x => x.Id)
+    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @style = "margin-bottom:10px" })
+    @Html.ValidationMessageFor(x => x.Name, "", new { @style = "color:red;" })
+    <br />
+    @Html.LabelFor(x => x.Price)
+    @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @style = "margin-bottom:10px" })
+    @Html.ValidationMessageFor(x => x.Price, "", new { @style = "color:red;" })
+    <br />
+
+    @Html.LabelFor(x => x.Stock)
+    @Html.TextBoxFor(x => x.Stock, new { @class = "form-control", @style = "margin-bottom:10px" })
+    @Html.ValidationMessageFor(x => x.Stock, "", new { @style = "color:red;" })
+    <br />
+
+    @Html.LabelFor(x => x.Color)
+    @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @style = "margin-bottom:10px" })
+    @Html.ValidationMessageFor(x => x.Color, "", new { @style = "color:red;" })
+    <br />
+    <button class="btn btn-success">Add Food</button>
+}

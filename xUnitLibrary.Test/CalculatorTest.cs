@@ -20,7 +20,8 @@ namespace xUnitLibrary.Test
 			//Assert:doğrulama evresidir. act evresinden çıkan sonuç benim bekleidğim sonuç mu diye kontrol edeceğim yer. burada total değişkeni benim beklediğim sonucu veriyor mu diye kontrol edeceğim
 			Assert.Equal<int>(11, total);//assert içinde onalrca statik metot var. bir classı karşılaştırmak,
 										 //bir riski karşılaştırabilriiz. bunlardan en temeli; iki string ifadeyi karşılaştırmak,
-										 //iki int/double/float vs ifadeyi karşılaştırmak için kullanılacak metot "Equals" metodudur. bu metot generic bir metot olduğu için türü belirtmemiz gerekiyor. ben int türünde bir karşılaştırma yapacağım için <int> yazıyorum. ilk parametre beklediğim sonuç, ikinci parametre act aşamasından çıkan sonuç
+										 //iki int/double/float vs ifadeyi karşılaştırmak için kullanılacak metot "Equals" metodudur. bu metot generic bir metot olduğu için türü belirtmemiz gerekiyor. ben int türünde bir karşılaştırma yapacağım için <int> yazıyorum.
+										 //ilk parametre beklediğim sonuç, ikinci parametre act aşamasından çıkan sonuç
 		}                               //NotEqual metodu beklediğim sonuçla act aşamasından çıkan sonucu karşılaştırır ve eğer birbirlerine eşit değillerse test başarılı olur. eğer birbirlerine eşitlerse test başarısız olur.
 
 

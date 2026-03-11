@@ -27,4 +27,8 @@
     <ProjectReference Include="..\xUnitLibrary.APP\xUnitLibrary.APP.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestMvc\" />
+  </ItemGroup>
+
 </Project>
