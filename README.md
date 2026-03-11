@@ -130,19 +130,22 @@ eğer ana proje bu iki yapıdan herhangi birini uygulamıyorsa kodlar birbirine 
 2-sonrasonda bu interface servisi implemente edecek bir class oluşturalım :CalculatorService
 3-ana sınıfımıza gidiyoruz ve di prensibini uyguluyoıruz yani ana sınıfımızın artık bir bağımlılığı olacak.
 Bu sınıf consturtorunda interface çağırır
-önceki hali:
+önceki hali
 
-
-public class Calculator
-{
-public int add(int a, int b)
+	public class Calculator
+	{
+	public int add(int a, int b)
 		{
 			int total = a + b;
 			if (a == 0 || b == 0)
+
 				return 0;
 			return total;
 		}
-}
+		}
+
+
+
 
 kodun sıkı sıkı add metoduna bağlı olamsını kaldırdık.
 Peki amacımız ne? Biz mock ile beraber interfacelerimizin nasıl davranış sergilediğini test etmek
@@ -151,6 +154,7 @@ Bu test etme imkanını bize sağlayan hazır frameworkler var. yani biz elle ta
 tabiki hazır framework kullandığımız zaman extra kod yazmıyoruz, zamandan kazanıyoruz iyi test edilmiş open source bir framework 
 olduğundan dolayı projelerde gönül rahatlığıyla kullanılabilir.
 test zamanında dependencyleri simüle etmemizi sağlıyor. test altında sistemimizin nasıl çalıştığını izlememizi sağlıyor
+	
 	//bu servis hesaplama ile ilgili işlemleri yapacak ve interface metotlarını barındıracak
 	public interface ICalculatorService
 	{
@@ -158,4 +162,65 @@ test zamanında dependencyleri simüle etmemizi sağlıyor. test altında sistem
 		double multiple (double a,double b);
 	}
 }
-//2-sonrasında bu interface servisi implemente edecek bir class oluşturalım
+
+
+## Verify 
+
+Moq frameworkunun de bazı hazır metotları vardır. Bir metodun çalışıp çalışmadığını test etmek, bir metodun iki kere mi 3 kere mi çalıştığını 
+görmemizi sağlayan metotlar vardır. Verify ile bir metodun kaç kez çalıştığını eya hiç çalışmama durumunu test edebiliriz
+
+
+## Throw
+
+Throw metod üzerinden geriye hata fırlatmak için kullanılır? tamam da nedir bu, anlamı nedir?
+diyelim ki gerçek projede bir servisten belli bir şarta göre gerite bir hata fırlatıyoruz. işte bu gibi durumları mock tarafında simüle etmek için kullanılır
+
+## Callback & It.IsAny
+
+//bir metot üzerinden callback çalıştırmak: ikinci bir metod çalıştırmak kısaca. simule edeceğimiz metot  sadece int tipi değer alışsa çalışsın, string değeri alırsa şu değeri alsın vs
+//simule edilen metottan sonra .callback() şeklinde çağrılır 
+//simüle edeceğimiz metotta herhangi bir değeri kabul etmek için ise It.IsAny<type> kullanılır
+
+	/*
+	[Theory]
+	[InlineData(2,3,6)]	
+	public void Multiple_CallbackAndIsAny(int a,int b,int expectedMultiple)
+	{
+	myMock.Setup(c=>c.multiple(a,b)).Returns(expectedMultiple);
+	Assert.Equal(15,calculator.multiple(a,b));
+	//	Assert.Equal(10,calculator.multiple(a=2,b=5)); --> işte burada hata alırız çünkü şuan a ve b değerleri 2 ve 3 dışında herhangi
+	//	bir şey kabl etmiyor. yani sadece onları test ediyor. bizim bunu değiştirrip farklı sayıları da test etmemiz gerekiir
+	//şimdi bu metodu yorum satırı yapıp aşağıda anlatıyorum
+	}
+	*/
+
+	[Theory]
+	[InlineData(2, 3, 6)]
+	public void Multiple_CallbackAndIsAny(int a, int b, int expectedMultiple)
+	{
+	int actualMultiple=0;
+	myMock.Setup(c => c.multiple(It.IsAny<int>(),It.IsAny<int>()))//burada a ve be değil, herhangi bir değeri kabul edeceğini belirten It.IsAny kullanılır. yani bu metot integer olarak herhangi bir değer alabilir
+		.Callback<int,int>((x,y)=>actualMultiple=x*y);//herhangi bir integer dfeğer geldiği zaman callbakck ile şu metot çalışsın diyoruz
+	calculator.multiple(a,b);
+	Assert.Equal(expectedMultiple, actualMultiple);
+	calculator.multiple(20, 5);
+	Assert.Equal(100, actualMultiple);//callback ve iı.isAny kullanmasaydık bu şekilde birden çok equal metodu çağıramazdık
+	}
+
+
+
+
+
+	
+	
+	
+
+
+	
+
+
+
+	
+
+
+
