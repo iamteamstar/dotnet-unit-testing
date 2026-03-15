@@ -83,6 +83,7 @@ namespace xUnitTestWithMVC.Controllers
 			}
 			if(ModelState.IsValid)
 			{
+				_productRepository.Update(product);
 				return RedirectToAction(nameof(Index));
 			}
 			return View(product);
