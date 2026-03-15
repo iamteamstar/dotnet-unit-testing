@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using xUnitTestWithMVC.Models;
+using xUnitTestWithMVC.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<XUnitTestMvcDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

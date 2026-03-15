@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JobApplicationLibrary.UnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+221ea8d17050cdd553f02860ff47fb1e9dcbbb7d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78346162d4af30bf6348c42ef75c762d339b6731")]
 [assembly: System.Reflection.AssemblyProductAttribute("JobApplicationLibrary.UnitTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JobApplicationLibrary.UnitTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
